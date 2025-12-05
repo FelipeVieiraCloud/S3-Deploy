@@ -1,5 +1,9 @@
+resource "random_id" "bucket_suffix" {
+  byte_length = 4
+}
+
 resource "aws_s3_bucket" "validation_bucket" {
-  bucket = "${var.customer_name}-${var.project_name}-${var.environment_name}-validation-labs"
+  bucket = "${var.customer_name}-${var.project_name}-${var.environment_name}-validation-${random_id.bucket_suffix.hex}"
   
   tags = merge(var.tags, {
     Purpose   = "Pipeline Validation"

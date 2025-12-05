@@ -40,12 +40,14 @@ phases:
   build:
     commands:
       - TF_DIR="${CODEBUILD_SRC_DIR_TerraformSource}/${CODE_SRC_DIR}"
-      - terraform -chdir="$TF_DIR" apply -input=false -auto-approve tfplan-prod
-      - 'printf "Apply OK at %s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > apply_done.txt'
+      - echo "=== SHOWING TERRAFORM PLAN (NOT APPLYING) ==="
+      - terraform -chdir="$TF_DIR" show tfplan-prod
+      - echo "=== PLAN REVIEW COMPLETED - NO RESOURCES CREATED ==="
+      - 'printf "Plan reviewed at %s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > apply_done.txt'
 
   post_build:
     commands:
-      - echo "Deploy to Production completed on `date`"
+      - echo "Plan review for Production completed on `date`"
 
 artifacts:
   files:
